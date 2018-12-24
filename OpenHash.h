@@ -11,7 +11,8 @@ public:
 	~OpenHash();
 	void insert_hash(int x);
 	void print();
-	List buckets[];
+	bool member(int x, int bucket);
+	ListNode** buckets;
 private:
 	static const int N = 10;
 	int hash_function(int x);
