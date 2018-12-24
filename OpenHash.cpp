@@ -2,49 +2,28 @@
 
 OpenHash::OpenHash()
 {
-	List buckets[N];
+	buckets = (ListNode**) malloc(N*sizeof(ListNode*));
+	for(int i=0;i<N;i++)buckets[i]=NULL;
 
-	List newList0;
-	List newList1;
-	List newList2;
-	List newList3;
-	List newList4;
-	List newList5;
-	List newList6;
-	List newList7;
-	List newList8;
-	List newList9;
-
-	buckets[0] = newList0;
-	buckets[1] = newList1;
-	buckets[2] = newList2;
-	buckets[3] = newList3;
-	buckets[4] = newList4;
-	buckets[5] = newList5;
-	buckets[6] = newList6;
-	buckets[7] = newList7;
-	buckets[8] = newList8;
-	buckets[9] = newList9;
-
-	/*for(int i = 0; i < N; i++)
-	{
-
-		buckets[i] = newList;
-	}
-	 * */
 	std::cout <<"hash created"<<"\n";
 }
 
 OpenHash::~OpenHash()
 {
 }
+
 void OpenHash::insert_hash(int x)
 {
-	std::cout << "insert for " << x << "\n";
+	List aux;
 	int b = hash_function(x);
-	buckets[b].insert(x);
-	buckets[b].print();
-
+	std::cout << "insert " << x <<" in "<<b<< "\n";
+	aux.header=buckets[b];
+    if(!member(x,b))
+	{
+		ListNode* newNode=new ListNode(x);
+		newNode->next = buckets[b];
+		buckets[b] = newNode;
+	}
 }
 
 int OpenHash::hash_function(int x)
@@ -55,18 +34,33 @@ int OpenHash::hash_function(int x)
 	return r;
 }
 
-void OpenHash::print()
+bool OpenHash::member(int x, int bucket)
 {
-
-	for(int i = 0; i < N; i++)
+	bool found = false;
+	ListNode* node = buckets[bucket];
+	while (node!=NULL and not found)
 	{
-	std::cout << "List on bucket " << i <<"\n" << "==================" <<"\n";
-	buckets[i].print();
+		if(node->element == x)
+		{
+			found = true;
+			node->count++;
+		}
+		else node = node->next;
 	}
+	return found;
 }
 
-List OpenHash::createList()
+void OpenHash::print()
 {
-	List newList;
-	return newList;
+	List aux;
+	for(int i = 0; i < N; i++)
+	{
+		if(buckets[i]!=NULL)
+		{
+			aux.header = buckets[i];
+			std::cout << "\nList on bucket " << i <<"\n==================" <<"\n";
+			aux.print();
+		}
+		else std::cout<< "\nBucket " << i << "is empty\n";
+	}
 }
