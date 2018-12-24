@@ -16,8 +16,6 @@ public:
 private:
 	static const int N = 10;
 	int hash_function(int x);
-	List createList();
-
 };
 
 #endif // OPENHASH_H
